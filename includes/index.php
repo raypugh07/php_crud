@@ -2,9 +2,9 @@
 
 <?php
 
-//require_once '../includes/filter-wrapper.php';
+//require_once '../includes/filter-wrapper.php';  //doesn't exist
 
-require_once '../includes/db.php';
+require_once '../includes/db.php';   // must use ../ before file location
 
 $sql = $db->query('SELECT id, title, release_date, publisher, rating,
 
