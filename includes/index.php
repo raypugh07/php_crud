@@ -35,8 +35,8 @@ $results = $sql->fetchAll(PDO::FETCH_OBJ);
             <th>Number Of Players</th>
             <th>Tools</th>
         </thead>
-        <tbody>
-        	<?php foreach($results as $entry): ?>
+        <tbody> 
+        	<?php foreach($results as $entry): ?> 
             <tr>
             	<td><?php echo $entry->title; ?></td>
                 <td><?php echo $entry->release_date; ?></td>

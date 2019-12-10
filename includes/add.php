@@ -1,17 +1,8 @@
 <?php
-//require_once '../includes/filter-wrapper.php';
-require_once '../includes/db.php'; //establishes connectiong to database
+//require_once 'includes/filter-wrapper.php';
+require_once '../includes/db.php';
 
-
-$errors = array(); //an array to help with validation
-
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-	//if there's no id redirect to the homepage
-	if(empty($id))
-	{
-		header('location: index.php');
-		exit;
-	}
+$errors = array();
 
 //sanitize all the fields
 $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
@@ -50,8 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 	//if there are no errors put data into database
 	if(empty($errors))
 	{
-		$sql = $db->prepare('UPDATE videogames SET title = :title, release_date = :release_date, publisher = :publisher, system = :system, rating = :rating, num_players = :num_players WHERE id = :id');
-		$sql->bindValue(':id', $id, PDO::PARAM_INT);
+		$sql = $db->prepare('INSERT videogames SET title = :title, release_date = :release_date, publisher = :publisher, system = :system, rating = :rating, num_players = :num_players');
 		$sql->bindValue(':title', $title, PDO::PARAM_STR);
 		$sql->bindValue(':release_date', $release_date, PDO::PARAM_STR);
 		$sql->bindValue(':publisher', $publisher, PDO::PARAM_STR);
@@ -65,22 +55,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 	}
 
 }
-else
-{
-	//display database information
-	//shows the title in the value part
-	$sql = $db->prepare('SELECT id, title, release_date, publisher, system, rating, num_players FROM videogames WHERE id = :id');
-	$sql->bindValue(':id', $id, PDO::PARAM_INT);
-	$sql->execute();
-	$results = $sql->fetch(PDO::FETCH_OBJ);
-
-	$title = $results->title;
-	$release_date = $results->release_date;
-	$publisher = $results->publisher;
-	$system = $results->system;
-	$rating = $results->rating;
-	$num_players = $results->num_players;
-}
 
 ?>
 <!DOCTYPE html>
@@ -88,13 +62,12 @@ else
 <head>
 <meta charset="utf-8" />
 <link href="styles/theme.css" rel="stylesheet"/>
-<title>Edit</title>
+<title>Add New Game</title>
 </head>
 <body>
 
-	<div id="wrapper">
-
-    <form action="edit.php?id=<?php echo $id; ?>" method="post">
+    <div id="wrapper">
+    <form action="add.php" method="post">
 
         <div>
         	<label for="title">Title</label>
@@ -149,7 +122,7 @@ else
         </div>
 
     </form>
-  </div>
+    </div>
 
 </body>
 </html>
